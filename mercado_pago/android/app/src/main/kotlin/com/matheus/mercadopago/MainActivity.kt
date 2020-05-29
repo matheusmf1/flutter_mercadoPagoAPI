@@ -42,7 +42,7 @@ class MainActivity: FlutterActivity() {
         MercadoPagoCheckout.Builder( publicKey, preferenceID ).build().startPayment(this@MainActivity, REQUEST_CODE )
     }
 
-   4 override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         val channelMercadoPagoResposta = MethodChannel( flutterView, "matheus.com/mercadoPagoResposta" )
