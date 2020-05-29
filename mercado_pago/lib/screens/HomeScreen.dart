@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
           "title": "Test",
           "quantity": 1,
           "currency_id": "BRL",
-          "unit_price": 10.4
+          "unit_price": 20.40
         }
       ],
 
@@ -116,7 +116,6 @@ class _HomeScreenState extends State<HomeScreen> {
           { "id": "ticket" },
           { "id": "atm" }
         ]
-
        }
   
     };

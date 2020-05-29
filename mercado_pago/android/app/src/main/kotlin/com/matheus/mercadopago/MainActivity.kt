@@ -14,23 +14,24 @@ class MainActivity: FlutterActivity() {
 
     private val REQUEST_CODE = 1
     
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         initFlutterChannels()
     }
 
     private fun initFlutterChannels() {
 
-        val chanelMercadoPago = MethodChannel( flutterView, "matheus.com/mercadoPago" )
+        val channelMercadoPago = MethodChannel( flutterView, "matheus.com/mercadoPago" )
 
-        chanelMercadoPago.setMethodCallHandler { methodCall, result ->
 
-            val args = methodCall.arguments as HashMap<String, Any>
+        channelMercadoPago.setMethodCallHandler { call, result ->
+
+            val args = call.arguments as HashMap<String, Any>
             val publicKey = args["publicKey"] as String
             val preferenceID = args["preferenceID"] as String
 
-            when( methodCall.method ) {
-                 "mercadoPago" -> mercadoPago(publicKey, preferenceID, result)
+            when( call.method ) {
+                "mercadoPago" -> mercadoPago( publicKey, preferenceID, result )
                 else -> return@setMethodCallHandler
             }
         }
@@ -41,7 +42,7 @@ class MainActivity: FlutterActivity() {
         MercadoPagoCheckout.Builder( publicKey, preferenceID ).build().startPayment(this@MainActivity, REQUEST_CODE )
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+   4 override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         val channelMercadoPagoResposta = MethodChannel( flutterView, "matheus.com/mercadoPagoResposta" )
@@ -51,22 +52,24 @@ class MainActivity: FlutterActivity() {
             val payment = data!!.getSerializableExtra( MercadoPagoCheckout.EXTRA_PAYMENT_RESULT ) as Payment
             val paymentStatus = payment.paymentStatus
             val paymentStatusDetails = payment.paymentStatusDetail
-            val paymentId = payment.id
+            val paymentID = payment.id
 
             val arrayList = ArrayList<String>()
-            arrayList.add( paymentId.toString() )
+            arrayList.add( paymentID.toString() )
             arrayList.add( paymentStatus )
             arrayList.add( paymentStatusDetails )
 
             channelMercadoPagoResposta.invokeMethod( "mercadoPagoOK", arrayList )
 
-        } else if ( resultCode == Activity.RESULT_CANCELED ) {
+        }
+        else if ( resultCode == Activity.RESULT_CANCELED ) {
 
             val arrayList = ArrayList<String>()
             arrayList.add( "pagoErro" )
             channelMercadoPagoResposta.invokeMethod( "mercadoPagoErro", arrayList )
 
-        } else {
+        }
+        else {
 
             val arrayList = ArrayList<String>()
             arrayList.add( "pagoCancelado" )
