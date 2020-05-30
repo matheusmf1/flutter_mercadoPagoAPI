@@ -3,7 +3,6 @@ package com.matheus.mercadopago
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import com.mercadopago.android.px.core.MercadoPagoCheckout
 import com.mercadopago.android.px.model.Payment
 import io.flutter.app.FlutterActivity
@@ -39,7 +38,7 @@ class MainActivity: FlutterActivity() {
     }
 
     private fun mercadoPago( publicKey: String, preferenceID: String, channelResult: MethodChannel.Result ) {
-        MercadoPagoCheckout.Builder( publicKey, preferenceID ).build().startPayment(this@MainActivity, REQUEST_CODE )
+        MercadoPagoCheckout.Builder( publicKey, preferenceID ).build().startPayment( applicationContext, REQUEST_CODE )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
