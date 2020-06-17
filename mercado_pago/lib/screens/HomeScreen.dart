@@ -131,8 +131,6 @@ class _HomeScreenState extends State < HomeScreen > {
 
             )
 
-
-
           ],
 
         )
@@ -156,7 +154,7 @@ class _HomeScreenState extends State < HomeScreen > {
 
       "payer": {
         "name": "Matheus",
-        "email": "mathew.mfranco@gmail.com"
+        "email": "test_user_19653727@testuser.com"
       },
 
       "payment_methods": {
